@@ -14,11 +14,13 @@ public class CircleProgressEntity {
 	//字体颜色
 	private int fontColor;
 	//字体大小
-	private int fontSize;
-	public CircleProgressEntity(String style) {
-		this.style = style;
+	private float fontSize;
+	//进度条背景颜色
+	private int progressBgColor;
+	public CircleProgressEntity() {
 	}
-	public CircleProgressEntity(String style, float progress, int progressColor, int progressWidth, String text, int fontColor, int fontSize) {
+	public CircleProgressEntity(String style, float progress, int progressColor, int progressWidth, String text, int fontColor, float fontSize, int progressBgColor) {
+		super();
 		this.style = style;
 		this.progress = progress;
 		this.progressColor = progressColor;
@@ -26,6 +28,13 @@ public class CircleProgressEntity {
 		this.text = text;
 		this.fontColor = fontColor;
 		this.fontSize = fontSize;
+		this.progressBgColor = progressBgColor;
+	}
+	public String getStyle() {
+		return style;
+	}
+	public void setStyle(String style) {
+		this.style = style;
 	}
 	public float getProgress() {
 		return progress;
@@ -57,22 +66,22 @@ public class CircleProgressEntity {
 	public void setFontColor(int fontColor) {
 		this.fontColor = fontColor;
 	}
-	public int getFontSize() {
+	public float getFontSize() {
 		return fontSize;
 	}
-	public void setFontSize(int fontSize) {
+	public void setFontSize(float fontSize) {
 		this.fontSize = fontSize;
 	}
-	
-	public String getStyle() {
-		return style;
+	public int getProgressBgColor() {
+		return progressBgColor;
+	}
+	public void setProgressBgColor(int progressBgColor) {
+		this.progressBgColor = progressBgColor;
 	}
 	@Override
 	public String toString() {
 		return "CircleProgressEntity [style=" + style + ", progress=" + progress + ", progressColor=" + progressColor + ", progressWidth=" + progressWidth + ", text=" + text + ", fontColor="
-				+ fontColor + ", fontSize=" + fontSize + "]";
+				+ fontColor + ", fontSize=" + fontSize + ", progressBgColor=" + progressBgColor + "]";
 	}
-	
-	
-	
+
 }

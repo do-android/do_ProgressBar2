@@ -6,6 +6,7 @@ import java.util.Map;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 import core.helper.DoTextHelper;
@@ -51,12 +52,15 @@ public class do_ProgressBar2_View extends FrameLayout implements DoIUIModuleView
 		DoProperty _propertyStyle = model.getProperty("style");
 		CircleProgressEntity entity = null;
 		String style = _propertyStyle.getValue();
+		if (style == null || TextUtils.isEmpty(style)) {
+			style = "normal";
+		}
 		//初始化数据
 		entity = new CircleProgressEntity();
 		entity.setStyle(style);
 		entity.setProgress( DoTextHelper.strToFloat(model.getProperty("progress").getValue(), 0.0f));
 		entity.setProgressColor(DoUIModuleHelper.getColorFromString(model.getProperty("progressColor").getValue(), 0x000000ff));
-		entity.setProgressWidth(DoTextHelper.strToInt(model.getProperty("progressWidth").getValue(), 1));
+		entity.setProgressWidth(checkProgressWidth(DoTextHelper.strToInt(model.getProperty("progressWidth").getValue(), 1)));
 		entity.setText(model.getProperty("text").getValue());
 		
 		int color = DoUIModuleHelper.getColorFromString(model.getProperty("fontColor").getValue(), 0x000000ff);
@@ -112,6 +116,7 @@ public class do_ProgressBar2_View extends FrameLayout implements DoIUIModuleView
 		}
 		if (_changedValues.containsKey("progressWidth")) {
 			int progressWidth = DoTextHelper.strToInt(_changedValues.get("progressWidth"), 0);
+			progressWidth = checkProgressWidth(progressWidth);
 			circleProgressView.setProgressWidth(progressWidth);
 		}
 		if (_changedValues.containsKey("text")) {
@@ -132,6 +137,16 @@ public class do_ProgressBar2_View extends FrameLayout implements DoIUIModuleView
 			float fontSize = DoTextHelper.strToFloat(_changedValues.get("fontSize"), 17.0f);
 			//int realFontSize = DoUIModuleHelper.getDeviceFontSize(this.model, fontSize+"");
 			circleProgressView.setFontSize(fontSize);
+		}
+	}
+
+	private int checkProgressWidth(int progressWidth) {
+		if(progressWidth<1){
+			return 1;
+		}else if(progressWidth>100){
+			return 100;
+		}else{
+			return progressWidth;
 		}
 	}
 

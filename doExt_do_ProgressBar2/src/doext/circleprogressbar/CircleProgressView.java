@@ -150,12 +150,13 @@ public class CircleProgressView extends View {
 
     private int progressBarScale = 1;
     private String currentStyle;
+    private boolean isFirst = true;
     public CircleProgressView(Context context,CircleProgressEntity entity) {
         super(context);
         mAutoTextValue = false;
-        String _style = entity.getStyle();
+        currentStyle = entity.getStyle();
         mRimColor = entity.getProgressBgColor();
-        if(!_style.equals("cycle")){
+        if(!currentStyle.equals("cycle")){
 			progressBarScale = entity.getProgressWidth();
 			setValue(entity.getProgress());
 
@@ -168,7 +169,7 @@ public class CircleProgressView extends View {
         	progressBarScale = entity.getProgressWidth();
         	mSpinnerColor = entity.getProgressColor();
         }
-        setStyle(_style);
+        setStyle();
        
         
     }
@@ -746,7 +747,8 @@ public class CircleProgressView extends View {
     }
 
 
-    private void drawCircleWithNumber(Canvas canvas, float _degrees) {
+   
+	private void drawCircleWithNumber(Canvas canvas, float _degrees) {
 
         float relativeGap = 1.03f; //gap size between text and unit
         boolean update = false;
@@ -1261,8 +1263,7 @@ public class CircleProgressView extends View {
         }
       
     }
-    public void setStyle(String _style){
-    	 currentStyle = _style;
+    private void setStyle(){
     	 if(currentStyle.equalsIgnoreCase("cycle")){
          	spin();
          }else{
@@ -1283,11 +1284,13 @@ public class CircleProgressView extends View {
 		if(currentStyle.equals("normal")){
 			mBarColors[0] = progressColor;
 			mBarColors[1] = progressColor;
-			resetProgressPaint();
+			setupPaints();
 			invalidate();
 		}else if(currentStyle.equals("cycle")){
 			mSpinnerColor = progressColor;
+			setupPaints();
 			spin();
+			invalidate();
 		}
 		
 		
@@ -1314,7 +1317,14 @@ public class CircleProgressView extends View {
 	}
 
 	public void setProgress(float progress) {
-		setValueAnimated(progress, 1500);
+		//初始化时显示进度不要动画
+		if(isFirst){
+			setValue(progress);
+			isFirst = false;
+		}else{
+			setValueAnimated(progress, 1500);
+		}
+		
 	}
 	
 	public void resetProgressPaint() {

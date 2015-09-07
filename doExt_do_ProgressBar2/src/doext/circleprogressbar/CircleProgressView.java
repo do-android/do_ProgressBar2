@@ -150,7 +150,6 @@ public class CircleProgressView extends View {
 
     private int progressBarScale = 1;
     private String currentStyle;
-    private boolean isFirst = true;
     public CircleProgressView(Context context,CircleProgressEntity entity) {
         super(context);
         mAutoTextValue = false;
@@ -333,6 +332,7 @@ public class CircleProgressView extends View {
 	public void setText(String text) {
 
 		mText = text;
+		setupPaints();
 		invalidate();
 	}
 
@@ -747,7 +747,6 @@ public class CircleProgressView extends View {
     }
 
 
-   
 	private void drawCircleWithNumber(Canvas canvas, float _degrees) {
 
         float relativeGap = 1.03f; //gap size between text and unit
@@ -1298,7 +1297,7 @@ public class CircleProgressView extends View {
 
 	public void setFontColor(int fontColor) {
 		setTextColor(fontColor);
-		mTextPaint.setColor(fontColor);
+		setupPaints();
 		invalidate();
 	}
 	public void setProgressBgColor(int _mRimColor) {
@@ -1317,13 +1316,7 @@ public class CircleProgressView extends View {
 	}
 
 	public void setProgress(float progress) {
-		//初始化时显示进度不要动画
-		if(isFirst){
-			setValue(progress);
-			isFirst = false;
-		}else{
-			setValueAnimated(progress, 1500);
-		}
+		setValueAnimated(progress, 1500);
 		
 	}
 	

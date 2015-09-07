@@ -6,6 +6,7 @@ import java.util.Map;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.widget.FrameLayout;
@@ -59,13 +60,13 @@ public class do_ProgressBar2_View extends FrameLayout implements DoIUIModuleView
 		entity = new CircleProgressEntity();
 		entity.setStyle(style);
 		entity.setProgress( DoTextHelper.strToFloat(model.getProperty("progress").getValue(), 0.0f));
-		entity.setProgressColor(DoUIModuleHelper.getColorFromString(model.getProperty("progressColor").getValue(), 0x000000ff));
+		entity.setProgressColor(DoUIModuleHelper.getColorFromString(model.getProperty("progressColor").getValue(), Color.BLACK));
 		entity.setProgressWidth(checkProgressWidth(DoTextHelper.strToInt(model.getProperty("progressWidth").getValue(), 1)));
 		entity.setText(model.getProperty("text").getValue());
 		
-		int color = DoUIModuleHelper.getColorFromString(model.getProperty("fontColor").getValue(), 0x000000ff);
+		int color = DoUIModuleHelper.getColorFromString(model.getProperty("fontColor").getValue(), Color.BLACK);
 		entity.setFontColor(color);
-		int progressBgColor = DoUIModuleHelper.getColorFromString(model.getProperty("progressBgColor").getValue(), 0xffffffff);
+		int progressBgColor = DoUIModuleHelper.getColorFromString(model.getProperty("progressBgColor").getValue(), Color.WHITE);
 		entity.setProgressBgColor(progressBgColor);
 		
 		String textSize = model.getProperty("fontSize").getValue();
@@ -135,8 +136,8 @@ public class do_ProgressBar2_View extends FrameLayout implements DoIUIModuleView
 		}
 		if (_changedValues.containsKey("fontSize")) {
 			float fontSize = DoTextHelper.strToFloat(_changedValues.get("fontSize"), 17.0f);
-			//int realFontSize = DoUIModuleHelper.getDeviceFontSize(this.model, fontSize+"");
-			circleProgressView.setFontSize(fontSize);
+			int realFontSize = DoUIModuleHelper.getDeviceFontSize(this.model, fontSize+"");
+			circleProgressView.setFontSize(realFontSize);
 		}
 	}
 

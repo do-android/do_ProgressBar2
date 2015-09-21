@@ -4,9 +4,9 @@ import android.app.Activity;
 import core.interfaces.DoIPageViewFactory;
 
 public class DoPageViewFactory implements DoIPageViewFactory {
-	
+
 	private Activity currentActivity;
-	
+
 	@Override
 	public void closePage(String arg0, String arg1, int layer) {
 		// TODO Auto-generated method stub
@@ -19,15 +19,20 @@ public class DoPageViewFactory implements DoIPageViewFactory {
 		return currentActivity;
 	}
 
+	public void setCurrentActivity(Activity currentActivity) {
+		this.currentActivity = currentActivity;
+	}
+
 	@Override
-	public void openPage(String arg0, String arg1, String arg2, String arg3,
-			String arg4, String arg5, String arg6, String arg7) {
+	public void closePage(String arg0, String arg1, String arg2) {
 		// TODO Auto-generated method stub
 
 	}
-	
-	public void setCurrentActivity(Activity currentActivity) {
-		this.currentActivity = currentActivity;
+
+	@Override
+	public void openPage(String arg0, String arg1, String arg2, String arg3, String arg4, String arg5, String arg6, String arg7, String arg8) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

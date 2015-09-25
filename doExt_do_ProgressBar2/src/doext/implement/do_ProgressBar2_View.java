@@ -1,13 +1,10 @@
 package doext.implement;
 
-
 import java.util.Map;
 
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 import core.helper.DoTextHelper;
@@ -16,9 +13,7 @@ import core.interfaces.DoIModuleTypeID;
 import core.interfaces.DoIScriptEngine;
 import core.interfaces.DoIUIModuleView;
 import core.object.DoInvokeResult;
-import core.object.DoProperty;
 import core.object.DoUIModule;
-import doext.circleprogressbar.CircleProgressEntity;
 import doext.circleprogressbar.CircleProgressView;
 import doext.define.do_ProgressBar2_IMethod;
 import doext.define.do_ProgressBar2_MAbstract;
@@ -38,6 +33,7 @@ public class do_ProgressBar2_View extends FrameLayout implements DoIUIModuleView
 	private do_ProgressBar2_MAbstract model;
 	private Context mContext;
 	private CircleProgressView circleProgressView;
+
 	public do_ProgressBar2_View(Context context) {
 		super(context);
 		this.mContext = context;
@@ -48,44 +44,15 @@ public class do_ProgressBar2_View extends FrameLayout implements DoIUIModuleView
 	 */
 	@Override
 	public void loadView(DoUIModule _doUIModule) throws Exception {
-		
 		this.model = (do_ProgressBar2_MAbstract) _doUIModule;
-		DoProperty _propertyStyle = model.getProperty("style");
-		CircleProgressEntity entity = null;
-		String style = _propertyStyle.getValue();
-		if (style == null || TextUtils.isEmpty(style)) {
-			style = "normal";
-		}
-		//初始化数据
-		entity = new CircleProgressEntity();
-		entity.setStyle(style);
-		entity.setProgress( DoTextHelper.strToFloat(model.getProperty("progress").getValue(), 0.0f));
-		entity.setProgressColor(DoUIModuleHelper.getColorFromString(model.getProperty("progressColor").getValue(), Color.BLACK));
-		entity.setProgressWidth(checkProgressWidth(DoTextHelper.strToInt(model.getProperty("progressWidth").getValue(), 1)));
-		entity.setText(model.getProperty("text").getValue());
-		
-		int color = DoUIModuleHelper.getColorFromString(model.getProperty("fontColor").getValue(), Color.BLACK);
-		entity.setFontColor(color);
-		int progressBgColor = DoUIModuleHelper.getColorFromString(model.getProperty("progressBgColor").getValue(), Color.WHITE);
-		entity.setProgressBgColor(progressBgColor);
-		
-		String textSize = model.getProperty("fontSize").getValue();
-		if(textSize == null||textSize.length()<=0){
-			entity.setFontSize(17.0f);
-		}else{
-			int realFontSize = DoUIModuleHelper.getDeviceFontSize(this.model,textSize+"");
-			entity.setFontSize(realFontSize);
-		}
-		
 		FrameLayout.LayoutParams fParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-		circleProgressView = new CircleProgressView(mContext, entity);
+		circleProgressView = new CircleProgressView(mContext);
 		fParams.gravity = Gravity.CENTER_HORIZONTAL;
 		fParams.topMargin = 0;
 		fParams.bottomMargin = 0;
-		
 		circleProgressView.setLayoutParams(fParams);
 		this.addView(circleProgressView);
-		
+
 	}
 
 	/**
@@ -106,7 +73,7 @@ public class do_ProgressBar2_View extends FrameLayout implements DoIUIModuleView
 	@Override
 	public void onPropertiesChanged(Map<String, String> _changedValues) {
 		DoUIModuleHelper.handleBasicViewProperChanged(this.model, _changedValues);
-		
+
 		if (_changedValues.containsKey("progress")) {
 			float _progress = DoTextHelper.strToFloat(_changedValues.get("progress"), 0.0f);
 			circleProgressView.setProgress(_progress);
@@ -121,10 +88,7 @@ public class do_ProgressBar2_View extends FrameLayout implements DoIUIModuleView
 			circleProgressView.setProgressWidth(progressWidth);
 		}
 		if (_changedValues.containsKey("text")) {
-			String text = _changedValues.get("text");
-			if(text!=null){
-				circleProgressView.setText(text);
-			}
+			circleProgressView.setText(_changedValues.get("text"));
 		}
 		if (_changedValues.containsKey("fontColor")) {
 			int _fontColor = DoUIModuleHelper.getColorFromString(_changedValues.get("fontColor"), 0x000000ff);
@@ -135,18 +99,25 @@ public class do_ProgressBar2_View extends FrameLayout implements DoIUIModuleView
 			circleProgressView.setProgressBgColor(_progressBgColor);
 		}
 		if (_changedValues.containsKey("fontSize")) {
-			float fontSize = DoTextHelper.strToFloat(_changedValues.get("fontSize"), 17.0f);
-			int realFontSize = DoUIModuleHelper.getDeviceFontSize(this.model, fontSize+"");
-			circleProgressView.setFontSize(realFontSize);
+			circleProgressView.setFontSize(DoUIModuleHelper.getDeviceFontSize(this.model, _changedValues.get("fontSize")));
+		}
+		
+		if (_changedValues.containsKey("style")) {
+			String _style = _changedValues.get("style");
+			if ("cycle".equals(_style)) {
+				circleProgressView.setStyle("cycle");
+			} else {
+				circleProgressView.setStyle("normal");
+			}
 		}
 	}
 
 	private int checkProgressWidth(int progressWidth) {
-		if(progressWidth<1){
+		if (progressWidth < 1) {
 			return 1;
-		}else if(progressWidth>100){
+		} else if (progressWidth > 100) {
 			return 100;
-		}else{
+		} else {
 			return progressWidth;
 		}
 	}
@@ -161,7 +132,7 @@ public class do_ProgressBar2_View extends FrameLayout implements DoIUIModuleView
 	 */
 	@Override
 	public boolean invokeSyncMethod(String _methodName, JSONObject _dictParas, DoIScriptEngine _scriptEngine, DoInvokeResult _invokeResult) throws Exception {
-		
+
 		return false;
 	}
 

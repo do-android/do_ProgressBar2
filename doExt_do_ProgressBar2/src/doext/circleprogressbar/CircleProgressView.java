@@ -904,14 +904,14 @@ public class CircleProgressView extends View {
 	 * @param _valueTo
 	 *            value after animation
 	 */
-	public void setValueAnimated(float _valueTo) {
-
-		mAnimationDuration = 1200;
-		Message msg = new Message();
-		msg.what = AnimationMsg.SET_VALUE_ANIMATED.ordinal();
-		msg.obj = new float[] { mCurrentValue, _valueTo };
-		mAnimationHandler.sendMessage(msg);
-	}
+//	public void setValueAnimated(float _valueTo) {
+//
+//		mAnimationDuration = 1200;
+//		Message msg = new Message();
+//		msg.what = AnimationMsg.SET_VALUE_ANIMATED.ordinal();
+//		msg.obj = new float[] { mCurrentValue, _valueTo };
+//		mAnimationHandler.sendMessage(msg);
+//	}
 
 	// endregion important getter / setter
 
@@ -1317,7 +1317,7 @@ public class CircleProgressView extends View {
 		if (null != currentStyle && "cycle".equals(currentStyle)) {
 			return;
 		}
-		setValueAnimated(progress, 1500);
+		setValueAnimated(progress, 0);
 	}
 
 	public void resetProgressPaint() {

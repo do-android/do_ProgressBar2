@@ -77,13 +77,13 @@ public class CircleProgressView extends View {
 	private int mPaddingLeft = 0;
 	private int mPaddingRight = 0;
 	// Colors (with defaults)
-	private int mBarColorStandard = 0x000000ff; // stylish blue
+	private int mBarColorStandard = Color.parseColor("#000000"); // stylish blue
 	private int mContourColor = 0xAA000000;
 	private int mSpinnerColor = mBarColorStandard; // stylish blue
 	private int mFillColor = 0x00000000; // transparent
-	private int mRimColor = 0xAA83d0c9;
-	private int mTextColor = 0xFF000000;
-	private int mUnitColor = 0xFF000000;
+	private int mRimColor = Color.parseColor("#FFFFFF");
+	private int mTextColor = Color.parseColor("#000000");
+	private int mUnitColor = Color.parseColor("#000000");
 	private int[] mBarColors = new int[] { mBarColorStandard, // stylish blue
 			mBarColorStandard, // stylish blue
 	};
@@ -203,8 +203,7 @@ public class CircleProgressView extends View {
 			size = widthWithoutPadding;
 		}
 		maxRadius = size / 2;
-		mBarWidth = (int) ((maxRadius * progressBarScale) / 100);
-		mRimWidth = (int) ((maxRadius * progressBarScale) / 100);
+		calculateProgressWidth(this.progressBarScale);
 		// If you override onMeasure() you have to call setMeasuredDimension().
 		// This is how you report back the measured size. If you don’t call
 		// setMeasuredDimension() the parent will throw an exception and your
@@ -1276,12 +1275,22 @@ public class CircleProgressView extends View {
 	}
 
 	public void setProgressWidth(int progressWidth) {
-		mBarWidth = (int) ((maxRadius * progressWidth) / 100);
-		mRimWidth = (int) ((maxRadius * progressWidth) / 100);
-		progressBarScale = progressWidth;
+		calculateProgressWidth(progressWidth);
 		setupBounds();
 		setupPaints();
 		invalidate();
+	}
+
+	public void calculateProgressWidth(int progressBarScale) {
+		this.progressBarScale = progressBarScale;
+		mBarWidth = (int) ((maxRadius * progressBarScale) / 100);
+		mRimWidth = (int) ((maxRadius * progressBarScale) / 100);
+		if (mBarWidth <= 0) {
+			mBarWidth = 1;
+		}
+		if (mRimWidth <= 0) {
+			mRimWidth = 1;
+		}
 	}
 
 	public void setProgressColor(int progressColor) {
